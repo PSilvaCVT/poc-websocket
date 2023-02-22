@@ -40,7 +40,7 @@ async def propagate(websocket, chat_id: str, message: str):
 
 
 async def process_message_events():
-    print("creating redis connection:")
+    print("Creating redis connection...")
     redis = aioredis.from_url(
         os.environ.get("REDIS_URL"),
         password=os.environ.get("REDIS_PASSWORD"),
