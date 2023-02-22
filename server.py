@@ -33,6 +33,9 @@ async def register_handler(websocket, chat_id: str):
     # TODO check Authorization Header - Bearer Token
     _register_websocket(websocket, key=chat_id)
     try:
+        async for message in websocket:
+            print(f"{websocket.id}-{chat_id}: {message}")
+            await broadcast(chat_id=chat_id, message=message)
         await websocket.wait_closed()
     finally:
         _unregister_websocket(websocket, key=chat_id)
