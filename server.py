@@ -30,7 +30,6 @@ def _unregister_websocket(websocket, key: str):
 
 
 async def register_handler(websocket, chat_id: str):
-    # TODO check Authorization Header - Bearer Token
     _register_websocket(websocket, key=chat_id)
     try:
         async for message in websocket:
@@ -51,32 +50,7 @@ async def broadcast(chat_id: str, message: str):
             pass
 
 
-# async def process_message_events():
-#     """Listen to events in Redis and process them."""
-#     print("creating redis connection:")
-#     redis = aioredis.from_url(
-#         os.environ.get("CX_API_REDIS_URL"),
-#         password=os.environ.get("CX_API_REDIS_PASSWORD"),
-#     )
-#     print("created.")
-#     print("subscribing to redis message_event:")
-#     pubsub = redis.pubsub()
-#     await pubsub.subscribe("message_event")
-#     print("subscribed")
-#     async for message in pubsub.listen():
-#         if message["type"] != "message":
-#             continue
-#         payload = message["data"].decode()
-#         event = json.loads(payload)
-#         session_id = event["session_id"]
-#         digital_employee_slug = event["digital_employee_slug"]
-#         message_data = json.dumps(event["data"])
-#         await broadcast(digital_employee_slug, session_id, message_data)
-#     print("subscription connection closed")
-
-
 async def handler(websocket):
-    print("test")
     matches = re.findall(r"/(chat)/(.*)/", websocket.path)
     if not matches or len(matches[0]) != 2:
         print("wrong arguments")
