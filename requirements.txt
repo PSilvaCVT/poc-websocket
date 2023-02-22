@@ -1,0 +1,4 @@
+python-dotenv
+
+websockets==10.4
+aioredis~=2.0.1
