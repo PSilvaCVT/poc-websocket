@@ -50,6 +50,7 @@ async def process_message_events():
     pubsub = redis.pubsub()
     await pubsub.subscribe("message_event")
     print("Subscribed!")
+    print("Ready to receive messages...")
     async for message in pubsub.listen():
         if message["type"] != "message":
             continue
