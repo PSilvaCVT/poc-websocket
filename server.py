@@ -19,13 +19,13 @@ def _register_websocket(websocket, key: str):
     if key not in CONNECTIONS.keys():
         CONNECTIONS[key] = []
     if websocket not in CONNECTIONS[key]:
-        print(f"connected: {key}")
+        print(f"connected id={websocket.id} chat_id={key}")
         CONNECTIONS[key].append(websocket)
 
 
 def _unregister_websocket(websocket, key: str):
     if CONNECTIONS[key]:
-        print(f"disconnected: {key}")
+        print(f"disconnected id={websocket.id} chat_id={key}")
         CONNECTIONS[key].remove(websocket)
 
 
@@ -40,7 +40,7 @@ async def register_handler(websocket, chat_id: str):
 async def handler(websocket):
     matches = re.findall(r"/(chat)/(.*)/", websocket.path)
     if not matches or len(matches[0]) != 2:
-        print("wrong arguments")
+        print("Rejecting connection: wrong arguments.")
         return
 
     path, chat_id = matches[0]
@@ -53,7 +53,7 @@ async def handler(websocket):
 
 def get_server():
     if ENV == "LOCAL":
-        print("serving")
+        print("Serving...")
         return websockets.serve(handler, "0.0.0.0", 8765)
 
 
