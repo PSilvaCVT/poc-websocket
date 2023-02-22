@@ -32,22 +32,9 @@ def _unregister_websocket(websocket, key: str):
 async def register_handler(websocket, chat_id: str):
     _register_websocket(websocket, key=chat_id)
     try:
-        async for message in websocket:
-            print(f"{websocket.id}-{chat_id}: {message}")
-            await broadcast(chat_id=chat_id, message=message)
         await websocket.wait_closed()
     finally:
         _unregister_websocket(websocket, key=chat_id)
-
-
-async def broadcast(chat_id: str, message: str):
-    if chat_id not in CONNECTIONS.keys():
-        return
-    for websocket in CONNECTIONS[chat_id].copy():
-        try:
-            await websocket.send(message)
-        except websockets.ConnectionClosed:
-            pass
 
 
 async def handler(websocket):
@@ -72,7 +59,6 @@ def get_server():
 
 async def main():
     async with get_server():
-        # await process_message_events()
         await asyncio.Future()
 
 asyncio.run(main())
